@@ -1,0 +1,24 @@
+"district_id","district_name","address","city","state","zip","website","phone","x_coordinate","y_coordinate","latitude","longitude"
+0,"Headquarters","3510 S Michigan Ave","Chicago","IL","60653","http://home.chicagopolice.org","",1177731.401,1881697.404,41.830702,-87.623395
+1,"Central","1718 S State St","Chicago","IL","60616","http://home.chicagopolice.org/community/districts/1st-district-central/","312-745-4290",1176569.052,1891771.704,41.858373,-87.627356
+2,"Wentworth","5101 S Wentworth Ave","Chicago","IL","60609","http://home.chicagopolice.org/community/districts/2nd-district-wentworth/","312-747-8366",1175864.837,1871153.753,41.801811,-87.63056
+3,"Grand Crossing","7040 S Cottage Grove Ave","Chicago","IL","60637","http://home.chicagopolice.org/community/districts/3rd-district-grand-crossing/","312-747-8201",1182739.183,1858317.732,41.766431,-87.605748
+4,"South Chicago","2255 E 103rd St","Chicago","IL","60617","http://home.chicagopolice.org/community/districts/4th-district-south-chicago/","312-747-7581",1193131.299,1837090.265,41.707933,-87.568349
+5,"Calumet","727 E 111th St","Chicago","IL","60628","http://home.chicagopolice.org/community/districts/5th-district-calumet/","312-747-8210",1183305.427,1831462.313,41.692723,-87.604506
+6,"Gresham","7808 S Halsted St","Chicago","IL","60620","http://home.chicagopolice.org/community/districts/6th-district-gresham/","312-745-3617",1172283.013,1853022.646,41.752137,-87.644229
+7,"Englewood","1438 W 63rd St","Chicago","IL","60636","http://home.chicagopolice.org/community/districts/7th-district-englewood/","312-747-8223",1167659.235,1863005.522,41.779632,-87.660887
+8,"Chicago Lawn","3420 W 63rd St","Chicago","IL","60629","http://home.chicagopolice.org/community/districts/8th-district-chicago-lawn/","312-747-8730",1154575.242,1862672.049,41.778987,-87.708864
+9,"Deering","3120 S Halsted St","Chicago","IL","60608","http://home.chicagopolice.org/community/districts/9th-district-deering/","312-747-8227",1171440.24,1884085.224,41.837394,-87.646408
+10,"Ogden","3315 W Ogden Ave","Chicago","IL","60623","http://home.chicagopolice.org/community/districts/10th-district-ogden/","312-747-7511",1154500.753,1890985.501,41.856685,-87.708382
+11,"Harrison","3151 W Harrison St","Chicago","IL","60612","http://home.chicagopolice.org/community/districts/11th-district-harrison/","312-746-8386",1155244.069,1897148.755,41.873582,-87.705488
+12,"Near West","1412 S Blue Island Ave","Chicago","IL","60608","http://home.chicagopolice.org/community/districts/12th-district-near-west/","312-746-8396",1168487.845,1893384.455,41.862977,-87.656973
+14,"Shakespeare","2150 N California Ave","Chicago","IL","60647","http://home.chicagopolice.org/community/districts/14th-district-shakespeare/","312-744-8250",1157304.426,1914481.521,41.921103,-87.697452
+15,"Austin","5701 W Madison St","Chicago","IL","60644","http://home.chicagopolice.org/community/districts/15th-district-austin/","312-743-1440",1138148.815,1899399.078,41.880083,-87.7682
+16,"Jefferson Park","5151 N Milwaukee Ave","Chicago","IL","60630","http://home.chicagopolice.org/community/districts/16th-district-jefferson-park/","312-742-4480",1138480.758,1933660.473,41.974094,-87.766149
+17,"Albany Park","4650 N Pulaski Rd","Chicago","IL","60630","http://home.chicagopolice.org/community/districts/17th-district-albany-park/","312-742-4410",1148843.91,1930801.058,41.966053,-87.728115
+18,"Near North","1160 N Larrabee St","Chicago","IL","60610","http://home.chicagopolice.org/community/districts/18th-district-near-north/","312-742-5870",1172080.029,1908086.527,41.903242,-87.643352
+19,"Town Hall","850 W Addison St","Chicago","IL","60613","http://home.chicagopolice.org/community/districts/19th-district-town-hall/","312-744-8320",1169730.744,1924160.317,41.9474,-87.651512
+20,"Lincoln","5400 N Lincoln Ave","Chicago","IL","60625","http://home.chicagopolice.org/community/districts/20th-district-lincoln/","312-742-8714",1158399.146,1935788.826,41.97955,-87.692845
+22,"Morgan Park","1900 W Monterey Ave","Chicago","IL","60643","http://home.chicagopolice.org/community/districts/22nd-district-morgan-park/","312-745-0710",1165825.476,1830851.333,41.691435,-87.66852
+24,"Rogers Park","6464 N Clark St","Chicago","IL","60626","http://home.chicagopolice.org/community/districts/24th-district-rogers-park/","312-744-5907",1164193.588,1943199.401,41.999763,-87.671324
+25,"Grand Central","5555 W Grand Ave","Chicago","IL","60639","http://home.chicagopolice.org/community/districts/25th-district-grand-central/","312-746-8605",1138770.871,1913442.439,41.918609,-87.765574
