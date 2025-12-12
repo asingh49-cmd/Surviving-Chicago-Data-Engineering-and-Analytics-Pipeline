@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chicago Geospatial Map - Income & Crime</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        
+        #map { 
+            width: 100vw; 
+            height: 100vh; 
+        }
+        
+        .controls {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            z-index: 1000;
+            max-width: 300px;
+        }
+        
+        .controls h2 {
+            font-size: 20px;
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+        
+        .control-group {
+            margin-bottom: 15px;
+        }
+        
+        .control-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #34495e;
+        }
+        
+        .control-group select {
+            width: 100%;
+            padding: 8px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+            background: white;
+        }
+        
+        .legend {
+            position: absolute;
+            bottom: 30px;
+            right: 20px;
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            z-index: 1000;
+        }
+        
+        .legend h3 {
+            font-size: 14px;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+        
+        .legend-gradient {
+            width: 200px;
+            height: 20px;
+            border-radius: 3px;
+            margin-bottom: 5px;
+        }
+        
+        .legend-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            color: #666;
+        }
+        
+        .leaflet-popup-content {
+            margin: 15px;
+            min-width: 200px;
+        }
+        
+        .popup-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #3498db;
+        }
+        
+        .popup-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 0;
+            font-size: 13px;
+        }
+        
+        .popup-label {
+            color: #7f8c8d;
+            font-weight: 600;
+        }
+        
+        .popup-value {
+            color: #2c3e50;
+            font-weight: bold;
+        }
+        
+        .info-box {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 15px 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            z-index: 1000;
+        }
+        
+        .info-box h1 {
+            font-size: 24px;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+        
+        .info-box p {
+            font-size: 13px;
+            color: #7f8c8d;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    
+    <div class="info-box">
+        <h1>🗺️ Chicago Crime & Income Map</h1>
+        <p>Interactive geospatial visualization</p>
+    </div>
+    
+    <div class="controls">
+        <h2>Map Controls</h2>
+        <div class="control-group">
+            <label>Color By:</label>
+            <select id="colorMetric">
+                <option value="income">Median Household Income</option>
+                <option value="crimeRate">Crime Rate (per 1,000)</option>
+                <option value="violentRate">Violent Crime Rate</option>
+                <option value="arrestRate">Arrest Rate %</option>
+            </select>
+        </div>
+    </div>
+    
+    <div class="legend">
+        <h3 id="legend-title">Median Household Income</h3>
+        <div class="legend-gradient" id="legend-gradient"></div>
+        <div class="legend-labels">
+            <span id="legend-min">Low</span>
+            <span id="legend-max">High</span>
+        </div>
+    </div>
+
+    <script>
+        // Community area data with actual Chicago coordinates
+        const communities = [
+            {
+                name: "ROGERS PARK",
+                coords: [[41.997, -87.661], [41.997, -87.660], [42.020, -87.660], [42.020, -87.673], [42.011, -87.673], [42.011, -87.661]],
+                pop: 53169,
+                income: 80000,
+                crimes: 3121,
+                arrests: 610,
+                violent: 978
+            },
+            {
+                name: "UPTOWN",
+                coords: [[41.965, -87.649], [41.965, -87.638], [41.974, -87.638], [41.974, -87.649]],
+                pop: 52674,
+                income: 75000,
+                crimes: 3442,
+                arrests: 477,
+                violent: 1080
+            },
+            {
+                name: "LINCOLN PARK",
+                coords: [[41.911, -87.636], [41.911, -87.617], [41.930, -87.617], [41.930, -87.636]],
+                pop: 62067,
+                income: 105000,
+                crimes: 3133,
+                arrests: 235,
+                violent: 525
+            },
+            {
+                name: "NEAR NORTH SIDE",
+                coords: [[41.890, -87.636], [41.890, -87.612], [41.911, -87.612], [41.911, -87.636]],
+                pop: 91635,
+                income: 109000,
+                crimes: 9257,
+                arrests: 1350,
+                violent: 2154
+            },
+            {
+                name: "LOOP",
+                coords: [[41.878, -87.636], [41.878, -87.623], [41.886, -87.623], [41.886, -87.636]],
+                pop: 38284,
+                income: 95000,
+                crimes: 7228,
+                arrests: 1526,
+                violent: 1625
+            },
+            {
+                name: "LAKE VIEW",
+                coords: [[41.930, -87.649], [41.930, -87.638], [41.954, -87.638], [41.954, -87.649]],
+                pop: 90652,
+                income: 98000,
+                crimes: 4968,
+                arrests: 469,
+                violent: 1088
+            },
+            {
+                name: "AUSTIN",
+                coords: [[41.890, -87.765], [41.890, -87.733], [41.920, -87.733], [41.920, -87.765]],
+                pop: 100278,
+                income: 35000,
+                crimes: 9845,
+                arrests: 2176,
+                violent: 3630
+            },
+            {
+                name: "WEST TOWN",
+                coords: [[41.890, -87.687], [41.890, -87.662], [41.905, -87.662], [41.905, -87.687]],
+                pop: 86453,
+                income: 92000,
+                crimes: 5425,
+                arrests: 515,
+                violent: 1194
+            },
+            {
+                name: "HUMBOLDT PARK",
+                coords: [[41.900, -87.720], [41.900, -87.690], [41.915, -87.690], [41.915, -87.720]],
+                pop: 55015,
+                income: 42000,
+                crimes: 5162,
+                arrests: 1724,
+                violent: 1613
+            },
+            {
+                name: "LOGAN SQUARE",
+                coords: [[41.915, -87.707], [41.915, -87.682], [41.933, -87.682], [41.933, -87.707]],
+                pop: 71354,
+                income: 73000,
+                crimes: 3556,
+                arrests: 621,
+                violent: 784
+            },
+            {
+                name: "NEAR WEST SIDE",
+                coords: [[41.870, -87.670], [41.870, -87.638], [41.886, -87.638], [41.886, -87.670]],
+                pop: 65370,
+                income: 68000,
+                crimes: 8382,
+                arrests: 992,
+                violent: 2281
+            },
+            {
+                name: "NORTH LAWNDALE",
+                coords: [[41.860, -87.737], [41.860, -87.707], [41.875, -87.707], [41.875, -87.737]],
+                pop: 30355,
+                income: 32000,
+                crimes: 5473,
+                arrests: 1679,
+                violent: 1972
+            },
+            {
+                name: "SOUTH LAWNDALE",
+                coords: [[41.843, -87.720], [41.843, -87.687], [41.857, -87.687], [41.857, -87.720]],
+                pop: 69554,
+                income: 40000,
+                crimes: 3104,
+                arrests: 748,
+                violent: 1193
+            },
+            {
+                name: "NEAR SOUTH SIDE",
+                coords: [[41.855, -87.636], [41.855, -87.615], [41.867, -87.615], [41.867, -87.636]],
+                pop: 26307,
+                income: 88000,
+                crimes: 1992,
+                arrests: 353,
+                violent: 549
+            },
+            {
+                name: "BRIDGEPORT",
+                coords: [[41.830, -87.657], [41.830, -87.635], [41.843, -87.635], [41.843, -87.657]],
+                pop: 33012,
+                income: 62000,
+                crimes: 1385,
+                arrests: 183,
+                violent: 416
+            },
+            {
+                name: "HYDE PARK",
+                coords: [[41.794, -87.600], [41.794, -87.584], [41.808, -87.584], [41.808, -87.600]],
+                pop: 24092,
+                income: 70000,
+                crimes: 2009,
+                arrests: 123,
+                violent: 415
+            },
+            {
+                name: "WOODLAWN",
+                coords: [[41.780, -87.609], [41.780, -87.592], [41.794, -87.592], [41.794, -87.609]],
+                pop: 24437,
+                income: 38000,
+                crimes: 2954,
+                arrests: 488,
+                violent: 1057
+            },
+            {
+                name: "SOUTH SHORE",
+                coords: [[41.756, -87.585], [41.756, -87.565], [41.780, -87.565], [41.780, -87.585]],
+                pop: 46276,
+                income: 45000,
+                crimes: 6696,
+                arrests: 902,
+                violent: 2619
+            },
+            {
+                name: "CHATHAM",
+                coords: [[41.730, -87.618], [41.730, -87.596], [41.750, -87.596], [41.750, -87.618]],
+                pop: 31440,
+                income: 48000,
+                crimes: 4487,
+                arrests: 686,
+                violent: 1583
+            },
+            {
+                name: "ENGLEWOOD",
+                coords: [[41.770, -87.668], [41.770, -87.643], [41.785, -87.643], [41.785, -87.668]],
+                pop: 21337,
+                income: 28000,
+                crimes: 4170,
+                arrests: 794,
+                violent: 1664
+            },
+            {
+                name: "WEST ENGLEWOOD",
+                coords: [[41.770, -87.686], [41.770, -87.668], [41.785, -87.668], [41.785, -87.686]],
+                pop: 25971,
+                income: 30000,
+                crimes: 3562,
+                arrests: 744,
+                violent: 1348
+            },
+            {
+                name: "AUBURN GRESHAM",
+                coords: [[41.730, -87.668], [41.730, -87.643], [41.750, -87.643], [41.750, -87.668]],
+                pop: 46483,
+                income: 43000,
+                crimes: 5136,
+                arrests: 666,
+                violent: 1857
+            }
+        ];
+
+        // Calculate metrics
+        communities.forEach(c => {
+            c.crimeRate = ((c.crimes / c.pop) * 1000).toFixed(1);
+            c.violentRate = ((c.violent / c.pop) * 1000).toFixed(1);
+            c.arrestRate = ((c.arrests / c.crimes) * 100).toFixed(1);
+        });
+
+        // Initialize map
+        const map = L.map('map').setView([41.8781, -87.6298], 11);
+
+        // Add base layer
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors',
+            maxZoom: 18
+        }).addTo(map);
+
+        let polygons = [];
+        let currentMetric = 'income';
+
+        function getColor(value, metric) {
+            let min, max, reversed = false;
+            
+            if (metric === 'income') {
+                min = 25000; max = 110000;
+            } else if (metric === 'crimeRate') {
+                min = 0; max = 200; reversed = true;
+            } else if (metric === 'violentRate') {
+                min = 0; max = 80; reversed = true;
+            } else {
+                min = 0; max = 40;
+            }
+            
+            const normalized = Math.max(0, Math.min(1, (value - min) / (max - min)));
+            const n = reversed ? 1 - normalized : normalized;
+            
+            // Green to Red gradient
+            if (n < 0.25) return '#d73027';
+            if (n < 0.5) return '#fc8d59';
+            if (n < 0.75) return '#fee090';
+            return '#91cf60';
+        }
+
+        function getValue(community, metric) {
+            if (metric === 'income') return community.income;
+            if (metric === 'crimeRate') return parseFloat(community.crimeRate);
+            if (metric === 'violentRate') return parseFloat(community.violentRate);
+            return parseFloat(community.arrestRate);
+        }
+
+        function createPolygons() {
+            // Clear existing polygons
+            polygons.forEach(p => map.removeLayer(p));
+            polygons = [];
+
+            communities.forEach(community => {
+                const value = getValue(community, currentMetric);
+                const color = getColor(value, currentMetric);
+                
+                const polygon = L.polygon(community.coords, {
+                    color: '#333',
+                    weight: 2,
+                    fillColor: color,
+                    fillOpacity: 0.7
+                }).addTo(map);
+
+                const popupContent = `
+                    <div class="popup-title">${community.name}</div>
+                    <div class="popup-row">
+                        <span class="popup-label">Population:</span>
+                        <span class="popup-value">${community.pop.toLocaleString()}</span>
+                    </div>
+                    <div class="popup-row">
+                        <span class="popup-label">Median Income:</span>
+                        <span class="popup-value">$${community.income.toLocaleString()}</span>
+                    </div>
+                    <div class="popup-row">
+                        <span class="popup-label">Total Crimes:</span>
+                        <span class="popup-value">${community.crimes.toLocaleString()}</span>
+                    </div>
+                    <div class="popup-row">
+                        <span class="popup-label">Crime Rate:</span>
+                        <span class="popup-value">${community.crimeRate} per 1,000</span>
+                    </div>
+                    <div class="popup-row">
+                        <span class="popup-label">Violent Crimes:</span>
+                        <span class="popup-value">${community.violent.toLocaleString()}</span>
+                    </div>
+                    <div class="popup-row">
+                        <span class="popup-label">Violent Rate:</span>
+                        <span class="popup-value">${community.violentRate} per 1,000</span>
+                    </div>
+                    <div class="popup-row">
+                        <span class="popup-label">Arrest Rate:</span>
+                        <span class="popup-value">${community.arrestRate}%</span>
+                    </div>
+                `;
+
+                polygon.bindPopup(popupContent);
+                
+                polygon.on('mouseover', function() {
+                    this.setStyle({ weight: 4, fillOpacity: 0.9 });
+                });
+                
+                polygon.on('mouseout', function() {
+                    this.setStyle({ weight: 2, fillOpacity: 0.7 });
+                });
+
+                polygons.push(polygon);
+            });
+        }
+
+        function updateLegend() {
+            const titles = {
+                income: 'Median Household Income',
+                crimeRate: 'Crime Rate (per 1,000)',
+                violentRate: 'Violent Crime Rate (per 1,000)',
+                arrestRate: 'Arrest Rate (%)'
+            };
+            
+            const gradients = {
+                income: 'linear-gradient(to right, #d73027, #fc8d59, #fee090, #91cf60)',
+                crimeRate: 'linear-gradient(to right, #91cf60, #fee090, #fc8d59, #d73027)',
+                violentRate: 'linear-gradient(to right, #91cf60, #fee090, #fc8d59, #d73027)',
+                arrestRate: 'linear-gradient(to right, #d73027, #fc8d59, #fee090, #91cf60)'
+            };
+
+            const ranges = {
+                income: ['$25K', '$110K+'],
+                crimeRate: ['0', '200+'],
+                violentRate: ['0', '80+'],
+                arrestRate: ['0%', '40%+']
+            };
+
+            document.getElementById('legend-title').textContent = titles[currentMetric];
+            document.getElementById('legend-gradient').style.background = gradients[currentMetric];
+            document.getElementById('legend-min').textContent = ranges[currentMetric][0];
+            document.getElementById('legend-max').textContent = ranges[currentMetric][1];
+        }
+
+        // Initialize
+        createPolygons();
+        updateLegend();
+
+        // Event listeners
+        document.getElementById('colorMetric').addEventListener('change', function() {
+            currentMetric = this.value;
+            createPolygons();
+            updateLegend();
+        });
+    </script>
+</body>
+</html>
