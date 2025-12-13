@@ -39,8 +39,6 @@
 - 🏢 49,327+ active business licenses
 - 👮 Police district boundaries and ward offices
 
-[📊 **View Full Presentation →**](Final_Project_Presentation.pdf)
-
 ---
 
 ## 🏆 Key Findings
