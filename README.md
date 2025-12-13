@@ -176,8 +176,8 @@ surviving-chicago-data-engineering/
 │   └── README.md                   # Data documentation
 │
 ├── sql/                            # SQL scripts for Schema and Loading Data
-|   ├── raw/                        # Original datasets
-│   └── cleaned/                    # Cleaned data
+|   ├── DDL_crimes.sql              # Schema and Table Creation
+│   └── DML_crime.sql               # Loading Data
 |
 ├── snowflake_mcp_server.py         # Snowflake MCP Server Python Script (Claude Desktop Config and MCP Server Setup shown in Local MCP Snowflake Server repo)
 │
