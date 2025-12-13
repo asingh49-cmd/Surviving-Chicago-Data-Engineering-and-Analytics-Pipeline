@@ -168,7 +168,7 @@ pip install -r requirements.txt
 surviving-chicago-data-engineering/
 │
 ├── README.md                       # You are here
-├── requirements.txt                # Python dependencies
+├── requirements.rtf                # Python dependencies
 │
 ├── data/                           # Data storage
 │   ├── raw/                        # Original datasets
