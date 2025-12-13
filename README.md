@@ -39,7 +39,7 @@
 - 🏢 49,327+ active business licenses
 - 👮 Police district boundaries and ward offices
 
-[📊 **View Full Presentation →**](./Final_Project_Presentation.pdf)
+[📊 **View Full Presentation →**](Final_Project_Presentation.pdf)
 
 ---
 
@@ -242,13 +242,12 @@ This framework can be applied to:
 
 <div align="center">
 
-| Name | LinkedIn | GitHub |
-|------|----------|--------|
-| Junny Choi | [LinkedIn](linkedin-url) | [GitHub](github-url) |
-| Adi Singh | [LinkedIn](linkedin-url) | [GitHub](github-url) |
-| Mike Peng | [LinkedIn](linkedin-url) | [GitHub](github-url) |
-| Wendy Xing | [LinkedIn](linkedin-url) | [GitHub](github-url) |
-
+| Name | LinkedIn |
+|------|----------|
+| Junny Choi | [LinkedIn](https://www.linkedin.com/in/junnychoi/) 
+| Adi Singh | [LinkedIn](https://www.linkedin.com/in/adipsingh) 
+| Mike Peng | [LinkedIn](https://www.linkedin.com/in/mike-peng-244237245/) 
+| Wendy Xing | [LinkedIn](https://www.linkedin.com/in/wendyxing/) 
 </div>
 
 ---
@@ -276,8 +275,3 @@ If you found this project helpful or interesting, please consider giving it a �
 ---
 
 <div align="center">
-
-[![GitHub stars](https://img.shields.io/github/stars/yourusername/surviving-chicago-data-engineering?style=social)](https://github.com/yourusername/surviving-chicago-data-engineering)
-[![GitHub forks](https://img.shields.io/github/forks/yourusername/surviving-chicago-data-engineering?style=social)](https://github.com/yourusername/surviving-chicago-data-engineering)
-
-</div>
