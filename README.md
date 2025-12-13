@@ -114,10 +114,10 @@ graph LR
 
 ### 🗺️ Geospatial Crime Map
 Real-time interactive map powered by **Leaflet.js** with:
-- ✅ 22 Chicago neighborhoods with actual lat/long boundaries
-- ✅ Color-coded by income, crime rate, violent crime, arrest rate
-- ✅ Hover tooltips with detailed statistics
-- ✅ Google Maps-style navigation (zoom, pan, rotate)
+- 22 Chicago neighborhoods with actual lat/long boundaries
+- Color-coded by income, crime rate, violent crime, arrest rate
+- Hover tooltips with detailed statistics
+- Google Maps-style navigation (zoom, pan, rotate)
 
 ### 📈 Weather-Crime Correlation Analysis
 
