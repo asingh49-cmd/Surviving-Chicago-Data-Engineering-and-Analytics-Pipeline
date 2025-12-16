@@ -22,7 +22,7 @@
 
 **A comprehensive data engineering pipeline analyzing 195,259 crimes across 77 Chicago neighborhoods to determine where you'll actually survive.**
 
-**Team:** Adi Singh | Junny Choi | Mike Peng | Wendy Xing
+**Team:** Adi Singh | Jangjoon (Junny) Choi | Mike Peng | Wendy Xing
 
 </div>
 
